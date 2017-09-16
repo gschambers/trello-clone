@@ -2,6 +2,7 @@ package dao.card;
 
 import com.google.inject.Inject;
 import datamodel.Card;
+import request.CardRequestParams;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,17 +22,36 @@ public class DbCardDao implements CardDao {
         this.dataSource = dataSource;
     }
 
-    public List<Card> getAll() throws RuntimeException {
+    public List<Card> getAll(CardRequestParams requestParams) throws RuntimeException {
         try {
             Connection conn = this.getConnection();
-            PreparedStatement statement =
-                conn.prepareStatement("SELECT `id`, `title`, `description` FROM `cards`");
-            ResultSet r = statement.executeQuery();
+
+            PreparedStatement stmt1 = conn.prepareStatement(
+                "SELECT `id`, `title`, `description` "
+                        + "FROM `cards`"
+            );
+            ResultSet r1 = stmt1.executeQuery();
+
+            PreparedStatement stmt2 = conn.prepareStatement(
+                "SELECT `cardId`, `tagId` "
+                        + "FROM `cards_tags`"
+            );
+            ResultSet r2 = stmt2.executeQuery();
+
+            HashMap<Integer, List<Integer>> tagMap = new HashMap<>();
+
+            while (r2.next()) {
+                Integer cardId = r2.getInt("cardId");
+                tagMap.putIfAbsent(cardId, new ArrayList<>());
+                tagMap.get(cardId).add(r2.getInt("tagId"));
+            }
 
             List<Card> cards = new ArrayList<>();
 
-            while (r.next()) {
-                cards.add(createCard(r));
+            while (r1.next()) {
+                Card card = createCard(r1);
+                card.setTagIds(tagMap.getOrDefault(card.getId(), new ArrayList<>()));
+                cards.add(card);
             }
 
             return cards;
@@ -42,17 +63,35 @@ public class DbCardDao implements CardDao {
     public Optional<Card> getById(int id) throws RuntimeException {
         try {
             Connection conn = this.getConnection();
-            PreparedStatement statement =
+
+            PreparedStatement stmt1 =
                 conn.prepareStatement(
                     "SELECT `id`, `title`, `description` "
                         + "FROM `cards` "
                         + "WHERE `id` = ?"
                 );
-            statement.setInt(1, id);
-            ResultSet r = statement.executeQuery();
+            stmt1.setInt(1, id);
+            ResultSet r1 = stmt1.executeQuery();
 
-            if (r.next()) {
-                return Optional.of(createCard(r));
+            PreparedStatement stmt2 =
+                conn.prepareStatement(
+                    "SELECT `tagId`"
+                        + "FROM `cards_tags` "
+                        + "WHERE `cardId` = ?"
+                );
+            stmt2.setInt(1, id);
+            ResultSet r2 = stmt2.executeQuery();
+
+            List<Integer> tagIds = new ArrayList<>();
+
+            while (r2.next()) {
+                tagIds.add(r2.getInt("tagId"));
+            }
+
+            if (r1.next()) {
+                Card card = createCard(r1);
+                card.setTagIds(tagIds);
+                return Optional.of(card);
             }
 
             return Optional.empty();

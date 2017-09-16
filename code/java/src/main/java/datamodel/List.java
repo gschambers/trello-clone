@@ -1,16 +1,11 @@
 package datamodel;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
-public class Card implements Serializable {
+public class List implements Serializable {
     private int id;
     private String title;
-    private String description;
-    private List<Integer> tagIds = new ArrayList<>();
-
-    public Card() {}
+    private int[] cardIds;
 
     public int getId() {
         return id;
@@ -28,25 +23,9 @@ public class Card implements Serializable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Integer> getTagIds() {
-        return tagIds;
-    }
-
-    public void setTagIds(List<Integer> tagIds) {
-        this.tagIds = tagIds;
-    }
-
     @Override
     public String toString() {
-        return "Card{" + "id=" + getId() + ", title=" + getTitle() + "}";
+        return "List{" + "id=" + getId() + ", title=" + getTitle() + "}";
     }
 
     @Override

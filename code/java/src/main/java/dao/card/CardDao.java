@@ -1,6 +1,8 @@
 package dao.card;
 
 import datamodel.Card;
+import request.CardRequestParams;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +11,7 @@ public interface CardDao {
      * @return A list of all cards
      * @throws Exception DataSource exception
      */
-    List<Card> getAll() throws Exception;
+    List<Card> getAll(CardRequestParams requestParams) throws Exception;
 
     /**
      * @param id The card ID
