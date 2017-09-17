@@ -1,7 +1,6 @@
-package dao.color;
+package tag;
 
 import com.google.inject.Inject;
-import datamodel.Color;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

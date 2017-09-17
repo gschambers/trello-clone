@@ -1,11 +1,12 @@
-package datamodel;
+package tag;
+
+import card.Card;
 
 import java.io.Serializable;
 
-public class List implements Serializable {
+public class Color implements Serializable {
     private int id;
-    private String title;
-    private int[] cardIds;
+    private String hexCode;
 
     public int getId() {
         return id;
@@ -15,17 +16,17 @@ public class List implements Serializable {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getHexCode() {
+        return hexCode;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setHexCode(String hexCode) {
+        this.hexCode = hexCode;
     }
 
     @Override
     public String toString() {
-        return "List{" + "id=" + getId() + ", title=" + getTitle() + "}";
+        return "Color{" + "id=" + getId() + ", hexCode=" + getHexCode() + "}";
     }
 
     @Override

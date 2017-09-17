@@ -1,8 +1,6 @@
-package dao.card;
+package card;
 
 import com.google.inject.Inject;
-import datamodel.Card;
-import request.CardRequestParams;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

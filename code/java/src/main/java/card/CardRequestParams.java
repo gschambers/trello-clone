@@ -1,4 +1,4 @@
-package request;
+package card;
 
 public class CardRequestParams {
     private int[] memberIds;

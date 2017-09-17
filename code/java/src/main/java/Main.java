@@ -1,14 +1,14 @@
+import card.CardDao;
 import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dao.card.*;
-import dao.color.ColorDao;
-import dao.tag.TagDao;
-import datamodel.Card;
+import tag.ColorDao;
+import tag.TagDao;
+import card.Card;
 import java.util.Arrays;
 import java.util.Optional;
-import request.CardRequestParams;
-import request.CardRequestType;
+import card.CardRequestParams;
+import card.CardRequestType;
 
 import static spark.Spark.*;
 

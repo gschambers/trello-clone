@@ -1,4 +1,6 @@
-package datamodel;
+package tag;
+
+import card.Card;
 
 import java.io.Serializable;
 

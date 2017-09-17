@@ -1,7 +1,7 @@
-package dao.tag;
+package tag;
 
 import com.google.inject.Inject;
-import datamodel.Tag;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

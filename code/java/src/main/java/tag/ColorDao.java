@@ -1,6 +1,5 @@
-package dao.color;
+package tag;
 
-import datamodel.Color;
 import java.util.List;
 
 public interface ColorDao {

@@ -1,4 +1,4 @@
-package request;
+package card;
 
 public enum CardRequestType {
     UNION,

@@ -1,6 +1,5 @@
-package dao.tag;
+package tag;
 
-import datamodel.Tag;
 import java.util.List;
 
 public interface TagDao {

@@ -1,11 +1,11 @@
 import com.google.inject.AbstractModule;
 import com.mysql.cj.jdbc.MysqlDataSource;
-import dao.card.CardDao;
-import dao.card.DbCardDao;
-import dao.color.ColorDao;
-import dao.color.DbColorDao;
-import dao.tag.TagDao;
-import dao.tag.DbTagDao;
+import card.CardDao;
+import card.DbCardDao;
+import tag.ColorDao;
+import tag.DbColorDao;
+import tag.TagDao;
+import tag.DbTagDao;
 
 import javax.sql.DataSource;
 
