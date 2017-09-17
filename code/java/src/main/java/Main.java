@@ -2,6 +2,8 @@ import com.google.gson.Gson;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dao.card.*;
+import dao.color.ColorDao;
+import dao.tag.TagDao;
 import datamodel.Card;
 import java.util.Arrays;
 import java.util.Optional;
@@ -15,6 +17,8 @@ public class Main {
         Gson gson = new Gson();
         Injector injector = Guice.createInjector(new TrelloModule());
         CardDao cardDao = injector.getInstance(CardDao.class);
+        ColorDao colorDao = injector.getInstance(ColorDao.class);
+        TagDao tagDao = injector.getInstance(TagDao.class);
 
         get("/cards", (req, res) -> {
             CardRequestParams requestParams = new CardRequestParams();
@@ -73,6 +77,9 @@ public class Main {
             // TODO: return created resource
             return null;
         }, gson::toJson);
+
+        get("/tags", (req, res) -> tagDao.getAll(), gson::toJson);
+        get("/colors", (req, res) -> colorDao.getAll(), gson::toJson);
 
         // Log uncaught exceptions
         exception(Exception.class, (exception, req, res) -> {

@@ -28,13 +28,13 @@ public class DbCardDao implements CardDao {
 
             PreparedStatement stmt1 = conn.prepareStatement(
                 "SELECT `id`, `title`, `description` "
-                        + "FROM `cards`"
+                    + "FROM `cards`"
             );
             ResultSet r1 = stmt1.executeQuery();
 
             PreparedStatement stmt2 = conn.prepareStatement(
                 "SELECT `cardId`, `tagId` "
-                        + "FROM `cards_tags`"
+                    + "FROM `cards_tags`"
             );
             ResultSet r2 = stmt2.executeQuery();
 
