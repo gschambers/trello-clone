@@ -20,20 +20,34 @@ public class DbCardDao implements CardDao {
         this.dataSource = dataSource;
     }
 
-    public List<Card> getAll(CardRequestParams requestParams) throws RuntimeException {
+    public List<Card> getAll(CardRequestDto requestParams) throws RuntimeException {
         try {
             Connection conn = this.getConnection();
 
-            PreparedStatement stmt1 = conn.prepareStatement(
-                "SELECT `id`, `title`, `description` "
-                    + "FROM `cards`"
-            );
-            ResultSet r1 = stmt1.executeQuery();
+            String cardsQuery =
+                "SELECT `id`, `title`, `description`, `boardId`, `listId`, `order` "
+                    + "FROM `cards`";
 
-            PreparedStatement stmt2 = conn.prepareStatement(
-                "SELECT `cardId`, `tagId` "
-                    + "FROM `cards_tags`"
-            );
+            String tagsQuery =
+                "SELECT ct.`cardId`, ct.`tagId` "
+                    + "FROM `cards_tags` ct";
+
+            Optional<Integer> boardId = requestParams.getBoardId();
+
+            if (boardId.isPresent()) {
+                cardsQuery += " WHERE `boardId` = ? ORDER BY `order`";
+                tagsQuery += " INNER JOIN `cards` c ON c.`id` = ct.`cardId` AND c.`boardId` = ?";
+            }
+
+            PreparedStatement stmt1 = conn.prepareStatement(cardsQuery);
+            PreparedStatement stmt2 = conn.prepareStatement(tagsQuery);
+
+            if (boardId.isPresent()) {
+                stmt1.setInt(1, boardId.get());
+                stmt2.setInt(1, boardId.get());
+            }
+
+            ResultSet r1 = stmt1.executeQuery();
             ResultSet r2 = stmt2.executeQuery();
 
             HashMap<Integer, List<Integer>> tagMap = new HashMap<>();
@@ -64,7 +78,7 @@ public class DbCardDao implements CardDao {
 
             PreparedStatement stmt1 =
                 conn.prepareStatement(
-                    "SELECT `id`, `title`, `description` "
+                    "SELECT `id`, `title`, `description`, `boardId`, `listId` "
                         + "FROM `cards` "
                         + "WHERE `id` = ?"
                 );
@@ -107,11 +121,13 @@ public class DbCardDao implements CardDao {
             Connection conn = this.getConnection();
             PreparedStatement statement =
                 conn.prepareStatement(
-                    "INSERT INTO `cards` (`title`, `description`) "
-                        + "VALUES (?, ?)"
+                    "INSERT INTO `cards` (`title`, `description`, `boardId`, `listId`) "
+                        + "VALUES (?, ?, ?, ?)"
                 );
             statement.setString(1, card.getTitle());
             statement.setString(2, card.getDescription());
+            statement.setInt(3, card.getBoardId());
+            statement.setInt(4, card.getListId());
             statement.execute();
             return true;
         } catch (SQLException ex) {
@@ -119,6 +135,7 @@ public class DbCardDao implements CardDao {
         }
     }
 
+    // TODO: add methods for moving cards between lists, boards, etc. 
     public boolean update(Card card) {
         try {
             Connection conn = this.getConnection();
@@ -154,6 +171,8 @@ public class DbCardDao implements CardDao {
         card.setId(r.getInt("id"));
         card.setTitle(r.getString("title"));
         card.setDescription(r.getString("description"));
+        card.setBoardId(r.getInt("boardId"));
+        card.setListId(r.getInt("listId"));
         return card;
     }
 

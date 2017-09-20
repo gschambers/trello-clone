@@ -1,13 +1,14 @@
-package board;
-
-import card.Card;
+package card;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class List implements Serializable {
+public class CardList implements Serializable {
     private int id;
     private String title;
-    private int[] cardIds;
+    private List<Integer> cardIds = new ArrayList<>();
+    private int order;
 
     public int getId() {
         return id;
@@ -25,9 +26,25 @@ public class List implements Serializable {
         this.title = title;
     }
 
+    public List<Integer> getCardIds() {
+        return cardIds;
+    }
+
+    public void setCardIds(List<Integer> cardIds) {
+        this.cardIds = cardIds;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
-        return "List{" + "id=" + getId() + ", title=" + getTitle() + "}";
+        return "CardList{" + "id=" + getId() + ", name=" + getTitle() + "}";
     }
 
     @Override

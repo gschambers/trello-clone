@@ -1,10 +1,22 @@
 package card;
 
-public class CardRequestParams {
+import java.io.Serializable;
+import java.util.Optional;
+
+public class CardRequestDto implements Serializable {
+    private Optional<Integer> boardId = Optional.empty();
     private int[] memberIds;
     private String query;
     private int[] tagIds;
     private CardRequestType type = CardRequestType.INTERSECTION;
+
+    public Optional<Integer> getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = Optional.of(boardId);
+    }
 
     public void setMemberIds(int[] memberIds) {
         this.memberIds = memberIds;

@@ -9,6 +9,8 @@ public class Card implements Serializable {
     private String title;
     private String description;
     private List<Integer> tagIds = new ArrayList<>();
+    private int boardId;
+    private int listId;
 
     public Card() {}
 
@@ -42,6 +44,22 @@ public class Card implements Serializable {
 
     public void setTagIds(List<Integer> tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public int getBoardId() {
+        return boardId;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = boardId;
+    }
+
+    public int getListId() {
+        return listId;
+    }
+
+    public void setListId(int listId) {
+        this.listId = listId;
     }
 
     @Override

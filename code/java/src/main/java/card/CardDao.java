@@ -8,7 +8,7 @@ public interface CardDao {
      * @return A list of all cards
      * @throws Exception DataSource exception
      */
-    List<Card> getAll(CardRequestParams requestParams) throws Exception;
+    List<Card> getAll(CardRequestDto requestParams) throws Exception;
 
     /**
      * @param id The card ID

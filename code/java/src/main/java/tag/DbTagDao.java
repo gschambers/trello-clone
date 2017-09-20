@@ -18,13 +18,15 @@ public class DbTagDao implements TagDao {
         this.dataSource = dataSource;
     }
 
-    public List<Tag> getAll() throws RuntimeException {
+    public List<Tag> getAllByBoardId(int boardId) throws RuntimeException {
         try {
             Connection conn = getConnection();
             PreparedStatement stmt = conn.prepareStatement(
                 "SELECT `id`, `name`, `colorId`, `hidden` "
-                    + "FROM `tags`"
+                    + "FROM `tags` "
+                    + "WHERE `boardId` = ?"
             );
+            stmt.setInt(1, boardId);
             ResultSet r = stmt.executeQuery();
 
             List<Tag> tags = new ArrayList<>();
