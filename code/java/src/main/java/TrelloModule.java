@@ -21,12 +21,8 @@ import java.util.Properties;
 public class TrelloModule extends AbstractModule {
     private final Properties config = new Properties();
 
-    public TrelloModule() {
-        try {
-            config.load(new FileReader("config.properties"));
-        } catch (IOException ex) {
-            System.err.println("Cannot load properties file");
-        }
+    public TrelloModule() throws IOException {
+        config.load(new FileReader("config.properties"));
     }
 
     @Override
